@@ -1,69 +1,23 @@
+@Library('library-demo') _
+
 pipeline {
-
-    agent {
-        node {
-            label 'master'
+    agent any
+    environment {
+        unix_server = "EUZ1NLDW04"
+        unix_src_path = "unix_scripts"
+        unix_deploy_path = "/tmp"
+        unix_service_account = "srvamr-sfaops@amer"
+    }
+    stages{
+        stage("Testing Unix Deployment"){
+            steps{
+                script{
+                    unix_deploy(src: unix_src_path, 
+                                dest: unix_deploy_path, 
+                                server: unix_server
+                                service_account: unix_service_account)
+                }
+            }
         }
     }
-
-    options {
-        buildDiscarder logRotator( 
-                    daysToKeepStr: '16', 
-                    numToKeepStr: '10'
-            )
-    }
-
-    stages {
-        
-        stage('Cleanup Workspace') {
-            steps {
-                cleanWs()
-                sh """
-                echo "Cleaned Up Workspace For Project"
-                """
-            }
-        }
-
-        stage('Code Checkout') {
-            steps {
-                checkout([
-                    $class: 'GitSCM', 
-                    branches: [[name: '*/main']], 
-                    userRemoteConfigs: [[url: 'https://github.com/spring-projects/spring-petclinic.git']]
-                ])
-            }
-        }
-
-        stage(' Unit Testing') {
-            steps {
-                sh """
-                echo "Running Unit Tests"
-                """
-            }
-        }
-
-        stage('Code Analysis') {
-            steps {
-                sh """
-                echo "Running Code Analysis"
-                """
-            }
-        }
-
-        stage('Build Deploy Code') {
-            when {
-                branch 'develop'
-            }
-            steps {
-                sh """
-                echo "Building Artifact"
-                """
-
-                sh """
-                echo "Deploying Code"
-                """
-            }
-        }
-
-    }   
 }
