@@ -1,0 +1,1 @@
+echo"copied to server"
