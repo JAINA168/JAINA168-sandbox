@@ -6,7 +6,7 @@ pipeline {
         unix_server = "EUZ1NLDW04"
         unix_src_path = "unix_scripts"
         unix_deploy_path = "/tmp/result_manish"
-        unix_service_account = "sfa-tds"
+        unix_service_account = "sfa-tds@emea"
         file_permissions = "755"
         unix_owner = "sfa-tds@emea"
         unix_group = "sfa-tds-etl-l-g"
