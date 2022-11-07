@@ -8,7 +8,7 @@ pipeline {
         unix_deploy_path = "/tmp/result_manish"
         unix_service_account = "sfa-tds"
         file_permissions = "755"
-        unix_owner = "sfa-tds"
+        unix_owner = "sfa-tds@emea"
         unix_group = "sfa-tds-etl-l-g"
     }
     stages{
