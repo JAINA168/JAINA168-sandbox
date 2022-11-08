@@ -5,10 +5,10 @@ pipeline {
     environment {
         unix_server = "EUZ1NLDW04"
         unix_src_path = "unix_scripts"
-        unix_deploy_path = "/tmp/result_manish"
+        unix_deploy_path = "/app/etl/icue/scripts/"
         unix_service_account = "sfa-tds@emea"
         file_permissions = "755"
-        unix_owner = "sfa-tds@emea"
+        unix_owner = "sfa-tds"
         unix_group = "sfa-tds-etl-l-g"
     }
     stages{
