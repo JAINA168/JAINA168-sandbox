@@ -6,7 +6,7 @@ pipeline {
         unix_server = "amrvlp000006956"
         unix_src_path = "unix_scripts"
         unix_deploy_path = "/tmp"
-        unix_service_account = "srvamr-sfaops@amer"
+        unix_service_account = "srvamr-sfaops"
     }
     stages{
         stage("Testing Unix Deployment"){
