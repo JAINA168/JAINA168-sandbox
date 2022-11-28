@@ -3,7 +3,7 @@
 pipeline {
     agent any
     environment {
-        unix_server = "EUZ1NLDW04"
+        unix_server = "amrvlp000006956"
         unix_src_path = "unix_scripts"
         unix_deploy_path = "/tmp"
         unix_service_account = "srvamr-sfaops@amer"
