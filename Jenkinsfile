@@ -11,7 +11,8 @@ pipeline {
             steps{
                 script{
                    sh """
-                        ls
+                        git checkout ${env.BRANCH_NAME}
+                        git status
                         cat test1.sql
                         cat test2.sql
                         find . -type f -name "*.sql" -print0 | xargs -0 sed -i "s/${source_string}/${replacement_string}/g"
@@ -19,8 +20,7 @@ pipeline {
                         cat test2.sql
                         git add .
                         git commit -m "Replacement of strings"
-                        git push ${env.BRANCH_NAME} HEAD:${env.BRANCH_NAME}
-                    
+                        git push
                    """
         }
     }
