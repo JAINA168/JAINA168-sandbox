@@ -19,7 +19,7 @@ pipeline {
                         cat test1.sql
                         cat test2.sql
                         git add .
-                        git commit -m "Replacement of strings"
+                        sudo git commit -m "Replacement of strings"
                         git push
                    """
         }
