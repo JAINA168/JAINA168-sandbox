@@ -17,6 +17,9 @@ pipeline {
                         find . -type f -name "*.sql" -print0 | xargs -0 sed -i "s/${source_string}/${replacement_string}/g"
                         cat test1.sql
                         cat test2.sql
+                        git add .
+                        git commit -m "Replacement of strings"
+                        git push
                    """
         }
     }
