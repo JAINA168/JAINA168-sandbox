@@ -3,9 +3,9 @@
 pipeline {
     agent any
     parameters {
-                string defaultValue: '_DEV_', name: 'source_string', trim: true
-                string defaultValue: '_TEST_', name: 'replacement_string', trim: true
-}
+        string defaultValue: '_DEV_', name: 'source_string', trim: true
+        string defaultValue: '_TEST_', name: 'replacement_string', trim: true
+    }
     stages{
          stage("Replacement String"){
             steps{
