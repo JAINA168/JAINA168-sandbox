@@ -8,6 +8,7 @@ pipeline {
                 script{
                    sh '''
                         ls
+                        git status
                         git branch -a
                    ''' 
         }
