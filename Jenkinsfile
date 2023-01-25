@@ -10,14 +10,14 @@ pipeline {
          stage("Replacement String"){
             steps{
                 script{
-                   sh '''
+                   sh """
                         ls
                         cat test1.sql
                         cat test2.sql
-                        find . -type f -name "*.sql" -print0 | xargs -0 sed -i "s/$source_string/$replacement_string/g"
+                        find . -type f -name "*.sql" -print0 | xargs -0 sed -i "s/${source_string}/${replacement_string}/g"
                         cat test1.sql
                         cat test2.sql
-                   ''' 
+                   """
         }
     }
 }
