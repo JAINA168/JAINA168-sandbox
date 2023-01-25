@@ -19,8 +19,8 @@ pipeline {
                         cat test2.sql
                         git add .
                         git commit -m "Replacement of strings"
-                        git push ${env.BRANCH_NAME} HEAD:${env.BRANCH_NAME}
-                        
+                        git push ${env.BRANCH_NAME}
+                    
                    """
         }
     }
