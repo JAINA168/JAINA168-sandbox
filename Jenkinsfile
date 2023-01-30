@@ -12,6 +12,7 @@ pipeline {
             steps{
                 script{
                    sh """
+                        git pull --all
                         git checkout ${branch_name}
                         git status
                         cat test1.sql
