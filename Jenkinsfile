@@ -5,13 +5,14 @@ pipeline {
     parameters {
         string defaultValue: '_DEV_', name: 'source_string', trim: true
         string defaultValue: '_TEST_', name: 'replacement_string', trim: true
+        string defaultValue: 'main', name: 'branch_name', trim: true
     }
     stages{
          stage("Replacement String"){
             steps{
                 script{
                    sh """
-                        git checkout ${env.BRANCH_NAME}
+                        git checkout ${branch_name}
                         git status
                         cat test1.sql
                         cat test2.sql
