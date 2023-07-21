@@ -1,0 +1,27 @@
+/* ----------------- P2COMPAUS_REPL_TEST_SAMPLE ----------------- */ 
+
+insert_job: P2COMPAUS_REPL_TEST_SAMPLE   job_type: BOX 
+owner: sfa-tds
+permission: me,mx,gx,wx
+date_conditions: 0
+description: "Replication test sample BOX"
+alarm_if_fail: 0
+alarm_if_terminated: 0
+
+
+/* ----------------- p2compaus_repl_test_sample ----------------- */ 
+
+insert_job: p2compaus_repl_test_sample   job_type: CMD 
+box_name: P2COMPAUS_REPL_TEST_SAMPLE 
+command: sendevent -E SET_GLOBAL -G P2COMPAUS_GV_REPL_DOWNTIME=TRUE
+machine: euz1pldw08
+owner: sfa-tds
+permission: me,mx,ge,gx
+date_conditions: 0
+description: "Replication test sample job - p2compaus_repl_test_sample
+job_terminator: 1
+std_out_file: "/app/etl/repl/autosys_logs/$AUTO_JOB_NAME.out"
+std_err_file: "/app/etl/repl/autosys_logs/$AUTO_JOB_NAME.err"
+alarm_if_fail: 0
+alarm_if_terminated: 0
+

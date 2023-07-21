@@ -1,29 +1,47 @@
-@Library('library-demo') _
-
 pipeline {
     agent any
-    environment {
-        unix_server = "EUZ1NLDW04"
-        unix_src_path = "unix_scripts"
-        unix_deploy_path = "/app/etl/icue/scripts/"
-        unix_service_account = "sfa-tds@emea"
-        file_permissions = "755"
-        unix_owner = "sfa-tds"
-        unix_group = "sfa-tds-etl-l-g"
+    environment{
+ 	autosys_main_server= 'amraelp00011108'
+	jilDirectory='autosys/'
+	apiEndpoint='https://amraelp00011055.pfizer.com:9443/AEWS/jil'
+    }
+    parameters {
+    choice choices: ['No', 'Yes'], description: 'Mention if You want to Deploy into Autosys Environment', name: 'Deploy_to_Autosys'
+	choice choices: ['No', 'Yes'], description: 'Mention if You want to Deploy into Unix Environment', name: 'Deploy_to_Unix'
+       
     }
     stages{
-        stage("Testing Unix Deployment"){
-            steps{
-                script{
-                    unix_deploy(src: unix_src_path, 
-                                dest: unix_deploy_path, 
-                                server: unix_server,
-                                service_account: unix_service_account,
-                                permissions: file_permissions,
-                                group: unix_group, 
-                                owner: unix_owner)
-                }
+        
+        stage ("Deploy to Autosys"){
+            when {
+                 expression { params.Deploy_to_Autosys == "Yes" }
             }
+            steps{		
+		//prod server testing		
+		        sh 'chmod +x python_scripts/autosys_deploy.sh' 
+		        withCredentials([usernamePassword(credentialsId: 'sfaops', passwordVariable: 'PASSWORD', usernameVariable: 'USERNAME')])
+                 {
+        		    script {
+            			env.PASSWORD = sh(script: "echo \$PASSWORD", returnStdout: true).trim()
+            			env.USERNAME = sh(script: "echo \$USERNAME", returnStdout: true).trim()
+        		    } 	
+			    sh 'python_scripts/autosys_deploy.sh'			
+		        }
+		}
+	}
+	 stage ("Deploy to Unix"){
+            when {
+                 expression { params.Deploy_to_Unix == "Yes" }
+            }
+                steps{
+                    script{
+        sh "scp -i /var/lib/jenkins/.ssh/id_rsa test1.py srvamr-sfaops@amer@EUZ1PLDW08:/app/etl/repl/scripts"
+		sh "ssh -i /var/lib/jenkins/.ssh/id_rsa srvamr-sfaops@amer@EUZ1PLDW08 'sudo chmod 775 /app/etl/repl/scripts/*'"
+		
+		    }
+                }
+        }
+            
+				
         }
     }
-}
