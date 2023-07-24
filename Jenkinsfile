@@ -3,7 +3,7 @@ pipeline {
     environment{
  	autosys_main_server= 'amraelp00011108'
 	jilDirectory='autosys/'
-	apiEndpoint='https://amraelp00011055.pfizer.com:9443/AEWS/jil'
+	autosys_apiEndpoint='https://amraelp00011055.pfizer.com:9443/AEWS/jil'
     }
     parameters {
     choice choices: ['No', 'Yes'], description: 'Mention if You want to Deploy into Autosys Environment', name: 'Deploy_to_Autosys'
