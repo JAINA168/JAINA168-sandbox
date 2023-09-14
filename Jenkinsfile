@@ -35,8 +35,9 @@ pipeline {
             }
                 steps{
                     script{
-                sh "scp -i /var/lib/jenkins/.ssh/id_rsa -r test1.py srvamr-sfaops@amer@EUZ1PLDW08:/app/etl/repl/scripts"
-		sh "ssh -i /var/lib/jenkins/.ssh/id_rsa srvamr-sfaops@amer@EUZ1PLDW08 'sudo chmod 775 /app/etl/repl/scripts/*'"
+			   sh '''         echo "This is a multiline script"         echo "You can run multiple Unix commands here"         ls -l     '''
+                 //sh "scp -i /var/lib/jenkins/.ssh/id_rsa -r test1.py srvamr-sfaops@amer@EUZ1PLDW08:/app/etl/repl/scripts"
+		// sh "ssh -i /var/lib/jenkins/.ssh/id_rsa srvamr-sfaops@amer@EUZ1PLDW08 'sudo chmod 775 /app/etl/repl/scripts/*'"
 		
 		    }
                 }
