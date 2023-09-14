@@ -44,4 +44,25 @@ pipeline {
             
 				
         }
+	post {
+        always {
+            script {
+                def s3Bucket = 'mydevopstest'
+                def s3Path = 'build-logs/'
+
+ 
+
+                // Archive the build log
+                archiveArtifacts artifacts: 'build.log', allowEmptyArchive: true
+
+ 
+
+                // Publish the build log to S3
+                s3Upload(credentialsId: 'S3Credentials', 
+                         bucket: s3Bucket, 
+                         sourceFile: 'build.log', 
+                         target: s3Path + env.BRANCH_NAME + '/build-${BUILD_NUMBER}.log')
+            }
+        }
+    }
     }
