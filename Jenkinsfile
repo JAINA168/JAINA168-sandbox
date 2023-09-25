@@ -48,8 +48,27 @@ pipeline {
 	post {
         always {
             script {
-                def s3Bucket = 'mydevopstest'
-                def s3Path = 'build-logs/'
+                 def s3Bucket = 'mydevopstest'
+                    def s3Path = 'build-logs/'
+                    sh 'touch demo.txt'
+                    sh 'echo $JOB_NAME'
+                    sh 'echo $JOB_BASE_NAME'
+                    sh 'echo $JENKINS_HOME'
+
+                   def projectNameSegments = currentBuild.fullProjectName.split('/')
+                    echo "${projectNameSegments}"
+
+                    def sfa = projectNameSegments[-3]
+                    def Pfizer_Align_UI = projectNameSegments[-2]
+                    def branch = projectNameSegments[-1]
+
+                    def job_split = "jobs/${sfa}/jobs/${Pfizer_Align_UI}/branches/${branch}/builds"
+                    def final_job = "${JENKINS_HOME}/${job_split}/${BUILD_NUMBER}/log"
+ 
+
+                    sh "echo Job URL: ${job_split}"
+                    sh "echo Job URL: ${final_job}"
+		    s3Upload consoleLogLevel: 'INFO', dontSetBuildResultOnFailure: false, dontWaitForConcurrentBuildCompletion: false, entries: [[bucket: 'mydevopstest', excludedFile: '', flatten: false, gzipFiles: false, keepForever: false, managedArtifacts: false, noUploadOnFailure: false, selectedRegion: 'us-east-1', showDirectlyInBrowser: false, sourceFile: '${final_job}', storageClass: 'STANDARD', uploadFromSlave: false, useServerSideEncryption: false]], pluginFailureResultConstraint: 'FAILURE', profileName: 'devops-test', userMetadata: []
 
  
 
