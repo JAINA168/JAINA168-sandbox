@@ -77,15 +77,15 @@ pipeline {
  
 
                 // Archive the build log
-                archiveArtifacts artifacts: '${BUILD_URL}/consoleText', allowEmptyArchive: true
+                // archiveArtifacts artifacts: '${BUILD_URL}/consoleText', allowEmptyArchive: true
 
  
 
-                // Publish the build log to S3
-                s3Upload(credentialsId: 'S3Credentials', 
-                         bucket: s3Bucket, 
-                         sourceFile: '${BUILD_URL}/consoleText', 
-                         target: s3Path + env.BRANCH_NAME + '/build-${BUILD_NUMBER}.log')
+                // // Publish the build log to S3
+                // s3Upload(credentialsId: 'S3Credentials', 
+                //          bucket: s3Bucket, 
+                //          sourceFile: '${BUILD_URL}/consoleText', 
+                //          target: s3Path + env.BRANCH_NAME + '/build-${BUILD_NUMBER}.log')
             }
         }
     }
