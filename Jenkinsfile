@@ -9,9 +9,9 @@ pipeline {
     parameters {
     	choice choices: ['No', 'Yes'], description: 'Mention if You want to Deploy into Autosys Environment', name: 'Deploy_to_Autosys'
 	choice choices: ['No', 'Yes'], description: 'Mention if You want to Deploy into Unix Environment', name: 'Deploy_to_Unix'
-	choice choices: ['Yes', 'No'], description: 'Mention if You want to Dry Run', name: 'dry_run'
-        choice choices: ['No', 'Yes'], description: 'If you want to send alerts', name: 'Email_Alert'
-        string defaultValue: 'None', description: 'Provide the comma separated Email addresses.', name: 'Notify_to'
+	// choice choices: ['Yes', 'No'], description: 'Mention if You want to Dry Run', name: 'dry_run'
+ //        choice choices: ['No', 'Yes'], description: 'If you want to send alerts', name: 'Email_Alert'
+ //        string defaultValue: 'None', description: 'Provide the comma separated Email addresses.', name: 'Notify_to'
        
     }
     stages{
@@ -50,12 +50,12 @@ pipeline {
 				
         }
 	post {
-		 failure {
-            notification_email(Email_Alert: Email_Alert, Notify_to: Notify_to) 
-        }
-        success {
-            notification_email(Email_Alert: Email_Alert, Notify_to: Notify_to)
-        }
+		 // failure {
+   //          notification_email(Email_Alert: Email_Alert, Notify_to: Notify_to) 
+   //      }
+   //      success {
+   //          notification_email(Email_Alert: Email_Alert, Notify_to: Notify_to)
+   //      }
         always {
             script {
                  def s3Bucket = 'mydevopstest'
