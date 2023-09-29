@@ -26,11 +26,7 @@ pipeline {
         // autosys_prod_server= "${getProperty("${env.BRANCH_NAME}_autosys_server")}"  
     }
     parameters {
-        choice choices: ['No', 'Yes'], description: 'Mention if You want to Deploy into PostgreSQL Environment', name: 'Deploy_to_PostgreSQL'
         choice choices: ['No', 'Yes'], description: 'Mention if You want to Deploy into Unix Environment', name: 'Deploy_to_Unix'
-        choice choices: ['No', 'Yes'], description: 'Mention if You want to Deploy into Snowflake Environment', name: 'Deploy_to_Snowflake_COMETL_CONTROL'
-        choice choices: ['No', 'Yes'], description: 'Mention if You want to Deploy into Snowflake Environment', name: 'Deploy_to_Snowflake_COMETL_PA'
-        choice choices: ['No', 'Yes'], description: 'Mention if You want to Deploy Autosys', name: 'Deploy_to_Autosys'
         choice choices: ['Yes', 'No'], description: 'Mention if You want to Dry Run', name: 'dry_run'
         choice choices: ['No', 'Yes'], description: 'If you want to send alerts', name: 'Email_Alert'
         string defaultValue: 'None', description: 'Provide the comma separated Email addresses.', name: 'Notify_to'
@@ -46,20 +42,7 @@ pipeline {
                 }
             }
         }
-        stage ("Deploy to PostgreSQL"){
-            when {
-                 expression { params.Deploy_to_PostgreSQL == "Yes" }
-            }
-            steps{
-                script{
-                        sh """
-                            cd Backend/grw/postgres
-                            ls
-                        """
-                        postgresql_deploy(url: pgdb_url, cred: pgdb_credid, changelog: pgdb_changeLogFile, dry_run: dry_run)
-                    }
-                }
-        }
+    
         stage ("Deploy to Unix"){
             when {
                  expression { params.Deploy_to_Unix == "Yes" }
@@ -72,21 +55,7 @@ pipeline {
                         }
                 }
         }
-        stage ("Deploy to Autosys"){
-            when {
-                 expression { params.Deploy_to_Autosys == "Yes" }
-            }
-            steps{		
-		        sh 'chmod +x devops_scripts/autosys_deploy.sh' 
-		        withCredentials([usernamePassword(credentialsId: 'sfaops', passwordVariable: 'PASSWORD', usernameVariable: 'USERNAME')]) {
-        		    script {
-            			env.PASSWORD = sh(script: "echo \$PASSWORD", returnStdout: true).trim()
-            			env.USERNAME = sh(script: "echo \$USERNAME", returnStdout: true).trim()
-        		    } 	
-			    sh 'devops_scripts/autosys_deploy.sh'			
-		        }
-            }		
-        }
+       
     }
     post {
         failure {
