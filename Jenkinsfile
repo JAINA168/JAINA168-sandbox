@@ -9,9 +9,9 @@ pipeline {
     parameters {
     	choice choices: ['No', 'Yes'], description: 'Mention if You want to Deploy into Autosys Environment', name: 'Deploy_to_Autosys'
 	choice choices: ['No', 'Yes'], description: 'Mention if You want to Deploy into Unix Environment', name: 'Deploy_to_Unix'
-	// choice choices: ['Yes', 'No'], description: 'Mention if You want to Dry Run', name: 'dry_run'
- //        choice choices: ['No', 'Yes'], description: 'If you want to send alerts', name: 'Email_Alert'
- //        string defaultValue: 'None', description: 'Provide the comma separated Email addresses.', name: 'Notify_to'
+	choice choices: ['Yes', 'No'], description: 'Mention if You want to Dry Run', name: 'dry_run'
+        choice choices: ['No', 'Yes'], description: 'If you want to send alerts', name: 'Email_Alert'
+        string defaultValue: 'None', description: 'Provide the comma separated Email addresses.', name: 'Notify_to'
        
     }
     stages{
@@ -50,51 +50,13 @@ pipeline {
 				
         }
 	post {
-		 // failure {
-   //          notification_email(Email_Alert: Email_Alert, Notify_to: Notify_to) 
-   //      }
-   //      success {
-   //          notification_email(Email_Alert: Email_Alert, Notify_to: Notify_to)
-   //      }
-        always {
-            script {
-                 def s3Bucket = 'mydevopstest'
-                    def s3Path = 'build-logs/'
-                    sh 'touch demo.txt'
-                    sh 'echo $JOB_NAME'
-                    sh 'echo $JOB_BASE_NAME'
-                    sh 'echo $JENKINS_HOME'
-
-                   def projectNameSegments = currentBuild.fullProjectName.split('/')
-                    echo "${projectNameSegments}"
-
-                    def sfa = projectNameSegments[-3]
-                    def Pfizer_Align_UI = projectNameSegments[-2]
-                    def branch = projectNameSegments[-1]
-
-                    def job_split = "jobs/${sfa}/jobs/${Pfizer_Align_UI}/branches/${branch}/builds"
-                    def final_job = "${JENKINS_HOME}/${job_split}/${BUILD_NUMBER}/log"
- 
-
-                    sh "echo Job URL: ${job_split}"
-                    sh "echo Job URL: ${final_job}"
-                    sh "echo ${WORKSPACE}"
-                    sh "cp ${final_job} ${WORKSPACE}"
-		    s3Upload consoleLogLevel: 'INFO', dontSetBuildResultOnFailure: false, dontWaitForConcurrentBuildCompletion: false, entries: [[bucket: 'mydevopstest', excludedFile: '', flatten: false, gzipFiles: false, keepForever: false, managedArtifacts: false, noUploadOnFailure: false, selectedRegion: 'us-east-1', showDirectlyInBrowser: false, sourceFile: 'log', storageClass: 'STANDARD', uploadFromSlave: false, useServerSideEncryption: false]], pluginFailureResultConstraint: 'FAILURE', profileName: 'devops-test', userMetadata: []
-
-
- 
-
-                // Archive the build log
-                // archiveArtifacts artifacts: '${BUILD_URL}/consoleText', allowEmptyArchive: true
-
- 
-
-                // // Publish the build log to S3
-                // s3Upload(credentialsId: 'S3Credentials', 
-                //          bucket: s3Bucket, 
-                //          sourceFile: '${BUILD_URL}/consoleText', 
-                //          target: s3Path + env.BRANCH_NAME + '/build-${BUILD_NUMBER}.log')
+		 failure {
+            notification_email(Email_Alert: Email_Alert, Notify_to: Notify_to) 
+        }
+        success {
+            notification_email(Email_Alert: Email_Alert, Notify_to: Notify_to)
+        }
+       
             }
         }
     }
