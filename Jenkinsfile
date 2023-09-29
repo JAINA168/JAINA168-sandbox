@@ -18,12 +18,12 @@ pipeline {
         // snowflake_credid = "${env.BRANCH_NAME}_pfzalgn_snowflake_credid"
         unix_permission = "775"
 	jilDirectory= 'Backend/publish/autosys'
-        autosys_apiEndpoint= "${getProperty("${env.BRANCH_NAME}_autosys_apiEndpoint")}"
+        // autosys_apiEndpoint= "${getProperty("${env.BRANCH_NAME}_autosys_apiEndpoint")}"
         autosys_dev_server= 'amrvopsfa000001'
         autosys_test_server='amrvotpa000001'
         autosys_sit_server= 'amrvoupa000001'
         autosys_uat_server= 'amrvospa000002'
-        autosys_prod_server= "${getProperty("${env.BRANCH_NAME}_autosys_server")}"  
+        // autosys_prod_server= "${getProperty("${env.BRANCH_NAME}_autosys_server")}"  
     }
     parameters {
         choice choices: ['No', 'Yes'], description: 'Mention if You want to Deploy into PostgreSQL Environment', name: 'Deploy_to_PostgreSQL'
