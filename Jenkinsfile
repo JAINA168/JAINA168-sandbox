@@ -57,7 +57,7 @@ pipeline {
             notification_email(Email_Alert: Email_Alert, Notify_to: Notify_to)
         }
        
-            }
+            
         }
     }
     }
