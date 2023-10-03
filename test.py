@@ -1,3 +1,12 @@
+|| PODNAME || Unix || PostgressSQL || Snowflake ||
+| Dev | Test | SIT | UAT | Prod | Dev | Test | SIT | UAT | Prod | Dev | Test | SIT | UAT | Prod |
+| Data conversion | EMEAVOPSFA00001 | "EMAAELP00010092 IP: 10.90.82.109" | NA | NA | NA | jdbc:postgresql://pfzalgn-emea-dev.cmp0gpuhg8ox.eu-west-1.rds.amazonaws.com:5432/PFZALGEMEATD | "EMEA:jdbc:postgresql://pfzalgn-emea-test.cluster-cmp0gpuhg8ox.eu-west-1.rds.amazonaws.com:5432/PFZALGEMEATT APAC:jdbc:postgresql://pfzalgn-apac-test.cluster-cmp0gpuhg8ox.eu-west-1.rds.amazonaws.com:5432/PFZALGAPACTT" | NA | NA | NA | "Control-jdbc:snowflake://emeadev01.eu-west-1.privatelink.snowflakecomputing.com/ ?role=COMETL_PA_EMEA_DEV_RW_ROLE&warehouse=COMETL_PA_EMEA_DEV_XSMALL_WH&db=COMETL_CONTROL_DEV_DB&schema=COMETL_CONTROL&multi_statement_count=0 Control-jdbc:snowflake://emeadev01.eu-west-1.privatelink.snowflakecomputing.com/ ?role=COMETL_PA_EMEA_DEV_RW_ROLE&warehouse=COMETL_PA_EMEA_DEV_XSMALL_WH&db=COMETL_PA_EMEA_DEV_DB&schema=COMETL_PA_INT_STG&multi_statement_count=0 jdbc:snowflake://emeadev01.eu-west-1.privatelink.snowflakecomputing.com/ ?role=COMETL_PA_APAC_TEST_RW_ROLE&warehouse=COMETL_PA_APAC_TEST_XSMALL_WH&db=COMETL_PA_APAC_TEST_DB&schema=COMETL_PA_INT_STG&multi_statement_count=0" | NA | NA |
+
+
+
+
+
+
 #!/usr/bin/env groovy
 import java.text.SimpleDateFormat
 import java.util.Date
