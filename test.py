@@ -1,8 +1,70 @@
-|| PODNAME || Unix || PostgressSQL || Snowflake ||
-| Dev | Test | SIT | UAT | Prod | Dev | Test | SIT | UAT | Prod | Dev | Test | SIT | UAT | Prod |
-| Data conversion | EMEAVOPSFA00001 | "EMAAELP00010092 IP: 10.90.82.109" | NA | NA | NA | jdbc:postgresql://pfzalgn-emea-dev.cmp0gpuhg8ox.eu-west-1.rds.amazonaws.com:5432/PFZALGEMEATD | "EMEA:jdbc:postgresql://pfzalgn-emea-test.cluster-cmp0gpuhg8ox.eu-west-1.rds.amazonaws.com:5432/PFZALGEMEATT APAC:jdbc:postgresql://pfzalgn-apac-test.cluster-cmp0gpuhg8ox.eu-west-1.rds.amazonaws.com:5432/PFZALGAPACTT" | NA | NA | NA | "Control-jdbc:snowflake://emeadev01.eu-west-1.privatelink.snowflakecomputing.com/ ?role=COMETL_PA_EMEA_DEV_RW_ROLE&warehouse=COMETL_PA_EMEA_DEV_XSMALL_WH&db=COMETL_CONTROL_DEV_DB&schema=COMETL_CONTROL&multi_statement_count=0 Control-jdbc:snowflake://emeadev01.eu-west-1.privatelink.snowflakecomputing.com/ ?role=COMETL_PA_EMEA_DEV_RW_ROLE&warehouse=COMETL_PA_EMEA_DEV_XSMALL_WH&db=COMETL_PA_EMEA_DEV_DB&schema=COMETL_PA_INT_STG&multi_statement_count=0 jdbc:snowflake://emeadev01.eu-west-1.privatelink.snowflakecomputing.com/ ?role=COMETL_PA_APAC_TEST_RW_ROLE&warehouse=COMETL_PA_APAC_TEST_XSMALL_WH&db=COMETL_PA_APAC_TEST_DB&schema=COMETL_PA_INT_STG&multi_statement_count=0" | NA | NA |
+#!/usr/bin/env groovy
 
+import java.text.SimpleDateFormat
+import java.util.Date
+import java.util.UUID
 
+def call(Map config) {
+    // Your existing code...
+
+    // Function to process JSON data and upload to S3
+    def processAndUploadJSON() {
+        def requestId = generateRequestID()
+
+        def jsonParams = [
+            "project_name": env.JOB_NAME,
+            "branch": env.BRANCH_NAME,
+            "project_path": env.WORKSPACE,
+            "job_url": env.JOB_DISPLAY_URL,
+            "build_id": env.BUILD_ID,
+            "build_number": env.BUILD_NUMBER,
+            "build_result": currentBuild.result,
+            "build_parameters": params,
+            "requestid": requestId
+        ]
+
+        // Convert JSON data to string
+        def jsonString = groovy.json.JsonOutput.toJson(jsonParams)
+
+        // Save JSON data to a file
+        def fileToUpload = "${env.WORKSPACE}/output.json"
+        writeFile file: fileToUpload, text: jsonString
+
+        // Upload JSON file to S3
+        s3Upload(
+            consoleLogLevel: 'INFO',
+            dontSetBuildResultOnFailure: false,
+            dontWaitForConcurrentBuildCompletion: false,
+            entries: [
+                [bucket: 'mydevopstest', excludedFile: '', flatten: false, gzipFiles: false, keepForever: false,
+                    managedArtifacts: false, noUploadOnFailure: false, selectedRegion: 'us-east-1',
+                    showDirectlyInBrowser: false, sourceFile: '*json', storageClass: 'STANDARD', uploadFromSlave: false,
+                    useServerSideEncryption: false]
+            ],
+            pluginFailureResultConstraint: 'FAILURE',
+            profileName: 'devops-test',
+            userMetadata: []
+        )
+    }
+
+    if ((env.BRANCH_NAME != 'dev') || (config.Email_Alert == 'Yes')) {
+        // Existing code...
+
+        // Call the function to process and upload JSON data
+        processAndUploadJSON()
+
+        // More existing code...
+    }
+    // More existing code...
+}
+
+def generateRequestID() {
+    // Existing code...
+}
+
+def getParametersTable() {
+    // Existing code...
+}
 
 
 
