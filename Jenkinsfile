@@ -3,13 +3,13 @@
 pipeline {
     agent any
     environment{
- 	autosys_main_server= 'amraelp00011593'
+ 	autosys_main_server= 'emaaelp00010116'
 	jilDirectory='autosys/'
 	autosys_apiEndpoint='https://amraelp00011055.pfizer.com:9443/AEWS/jil'
-	unix_server = "amrvopsfa000001"
+	unix_server = "emaaelp00010116"
         unix_src_path_scripts = "autosys"
         unix_deploy_path_scripts = "/tmp"
-        unix_service_account = "srvamr-palign@amer"
+        unix_service_account = "srvamr-sfaops@amer"
         unix_permission = "775"
 	priv_key_path = "/var/lib/jenkins/.ssh/palign_id_rsa"    
     }
