@@ -11,7 +11,7 @@ pipeline {
         unix_deploy_path_scripts = "/tmp"
         unix_service_account = "srvamr-sfaops@amer"
         unix_permission = "775"
-	priv_key_path = "/var/lib/jenkins/.ssh/palign_id_rsa"    
+	priv_key_path = "/var/lib/jenkins/.ssh/id_rsa"    
     }
     parameters {
         choice choices: ['No', 'Yes'], description: 'Mention if You want to Deploy into Autosys Environment', name: 'Deploy_to_Autosys'
