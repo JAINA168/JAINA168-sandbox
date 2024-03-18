@@ -6,7 +6,7 @@ pipeline {
  	autosys_main_server= 'emaaelp00010116'
 	jilDirectory='autosys/'
 	autosys_apiEndpoint='https://amraelp00011055.pfizer.com:9443/AEWS/jil'
-	unix_server = "EMAAELP00010092"
+	unix_server = "emaaelp00010106"
         unix_src_path_scripts = "unix"
         unix_deploy_path_scripts = "/app/etl/palign/emea/scripts"
         unix_service_account = "srvamr-sfaops@amer"
