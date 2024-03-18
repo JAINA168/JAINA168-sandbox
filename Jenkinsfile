@@ -6,9 +6,9 @@ pipeline {
  	autosys_main_server= 'emaaelp00010116'
 	jilDirectory='autosys/'
 	autosys_apiEndpoint='https://amraelp00011055.pfizer.com:9443/AEWS/jil'
-	unix_server = "emaaelp00010116"
-        unix_src_path_scripts = "autosys"
-        unix_deploy_path_scripts = "/tmp"
+	unix_server = "EMAAELP00010092"
+        unix_src_path_scripts = "unix"
+        unix_deploy_path_scripts = "/app/etl/palign/emea/scripts"
         unix_service_account = "srvamr-sfaops@amer"
         unix_permission = "775"
 	priv_key_path = "/var/lib/jenkins/.ssh/palign_id_rsa"    
@@ -34,8 +34,9 @@ pipeline {
         			return // Exit the script
     			}
 			     sh "echo test successful"
-			// sh "scp -i /var/lib/jenkins/.ssh/id_rsa -r ${unix_src_path_scripts}/* ${unix_service_account}@${unix_server}:${unix_deploy_path_scripts}"    
-                     }
+			 sh "scp -i /var/lib/jenkins/.ssh/id_rsa -r ${unix_src_path_scripts}/* ${unix_service_account}@${unix_server}:${unix_deploy_path_scripts}"    
+                    	 sh "ssh -i /var/lib/jenkins/.ssh/id_rsa ${unix_service_account}@${unix_server} 'chmod 775 ${unix_deploy_path_scripts}/*'" 
+		    }
                 }
         }
         
