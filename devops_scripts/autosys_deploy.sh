@@ -60,7 +60,7 @@ for jilFile in ${jilFiles}; do
         # Replace string in the JIL file for the "main" branch
         sed -i 's/d2compaapac/p2compaapac/g' "${jilFile}"
         sed -i 's/D2COMPAAPAC/P2COMPAAPAC/g' "${jilFile}"
-        sed -i "s/$autosys_dev_server/$autosys_uat_server/g" "${jilFile}"
+        sed -i "s/$autosys_dev_server/$autosys_prod_server/g" "${jilFile}"
         sed -i 's/pa_postgresql_master.ksh PALIGN DEV/pa_postgresql_master.ksh PALIGN APAC_PROD/g' "${jilFile}"
         sed -i 's/master_batch_upload.ksh PALIGN DEV/master_batch_upload.ksh PALIGN APAC_PROD/g' "${jilFile}"
         sed -i 's/master_cascade_notification.ksh DEV/master_cascade_notification.ksh APAC_PROD/g' "${jilFile}"
