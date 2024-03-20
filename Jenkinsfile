@@ -5,7 +5,7 @@ pipeline {
     environment{
  	autosys_main_server= 'emaaelp00010116'
 	jilDirectory='autosys'
-	autosys_apiEndpoint=' https://amraelp00011107.pfizer.com:9443/AEWS/jil'
+	autosys_apiEndpoint='https://amraelp00011107.pfizer.com:9443/AEWS/jil'
 	unix_server = "emaaelp00020784"
         unix_src_path_scripts = "unix"
         unix_deploy_path_scripts = "/app/etl/palign/emea/scripts"
