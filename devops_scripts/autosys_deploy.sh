@@ -56,7 +56,7 @@ for jilFile in ${jilFiles}; do
         sed -i 's/master_batch_upload.ksh PALIGN DEV/master_batch_upload.ksh PALIGN EMEA_UAT/g' "${jilFile}"
         sed -i 's/master_cascade_notification.ksh DEV/master_cascade_notification.ksh EMEA_UAT/g' "${jilFile}"
         sed -i 's/pa_upload_and_purge_logs.ksh PALIGN DEV/pa_upload_and_purge_logs.ksh PALIGN EMEA_UAT/g' "${jilFile}"
-    elif [ "${target_branch}" = "main" ]; then
+    elif [ "${target_branch}" = "master" ]; then
         # Replace string in the JIL file for the "main" branch
         sed -i 's/d2compaemea/p2compaemea/g' "${jilFile}"
         sed -i 's/D2COMPAEMEA/P2COMPAEMEA/g' "${jilFile}"
