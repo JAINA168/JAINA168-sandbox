@@ -4,8 +4,8 @@ pipeline {
     agent any
     environment{
  	autosys_main_server= 'emaaelp00010116'
-	jilDirectory='autosys/'
-	autosys_apiEndpoint='https://amraelp00011055.pfizer.com:9443/AEWS/jil'
+	jilDirectory='autosys'
+	autosys_apiEndpoint=' https://amraelp00011107.pfizer.com:9443/AEWS/jil'
 	unix_server = "emaaelp00020784"
         unix_src_path_scripts = "unix"
         unix_deploy_path_scripts = "/app/etl/palign/emea/scripts"
@@ -40,22 +40,25 @@ pipeline {
                 }
         }
         
-        stage ("Deploy to Autosys"){
+         stage ("Deploy to Autosys"){
             when {
                  expression { params.Deploy_to_Autosys == "Yes" }
             }
+            steps{
+                script{
+                    sh 'chmod +x devops_scripts/autosys_deploy.sh' 
+		            withCredentials([usernamePassword(credentialsId: 'sfaops', passwordVariable: 'PASSWORD', usernameVariable: 'USERNAME')]) {
+	                    script {
+	                        env.PASSWORD = sh(script: "echo \$PASSWORD", returnStdout: true).trim()
+	                        env.USERNAME = sh(script: "echo \$USERNAME", returnStdout: true).trim()
+	                    } 	
+			        sh 'devops_scripts/autosys_deploy.sh'
+                    }
+                }
+            }    
+        }      
            
-		steps{		
-		        sh 'chmod +x devops_scripts/autosys_deploy.sh' 
-		        withCredentials([usernamePassword(credentialsId: 'sfaops', passwordVariable: 'PASSWORD', usernameVariable: 'USERNAME')]) {
-        		    script {
-            			env.PASSWORD = sh(script: "echo \$PASSWORD", returnStdout: true).trim()
-            			env.USERNAME = sh(script: "echo \$USERNAME", returnStdout: true).trim()
-        		    } 	
-			    sh "devops_scripts/autosys_deploy.sh" // Pass the params			
-		        }
-            }	
-        }
+
 				
         }   
     post {
