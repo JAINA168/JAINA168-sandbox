@@ -44,10 +44,10 @@ pipeline {
                     	 sh "ssh -i /var/lib/jenkins/.ssh/id_rsa ${unix_service_account}@${unix_server} 'dzdo chmod 775 ${unix_deploy_path_scripts2}/*'" 
 			 sh "scp -i /var/lib/jenkins/.ssh/id_rsa -r ${unix_src_path_scripts}/* ${unix_service_account}@${unix_server}:${unix_deploy_path_scripts3}"    
                     	 sh "ssh -i /var/lib/jenkins/.ssh/id_rsa ${unix_service_account}@${unix_server} 'dzdo chmod 775 ${unix_deploy_path_scripts3}/*'" 
-			 sh "ssh -i /var/lib/jenkins/.ssh/id_rsa srvamr-sfaops@amer@emaaelp00020784 'dzdo sudo chown srvamr-palign@amer.pfizer.com:unix-palign-u@amer.pfizer.com ${unix_deploy_path_scripts3}/*'"
+			 sh "ssh -i /var/lib/jenkins/.ssh/id_rsa srvamr-sfaops@amer@emaaelp00020784 'dzdo chown srvamr-palign@amer.pfizer.com:unix-palign-u@amer.pfizer.com ${unix_deploy_path_scripts3}/*'"
 			 sh "scp -i /var/lib/jenkins/.ssh/id_rsa -r ${unix_src_path_scripts}/* ${unix_service_account}@${unix_server}:${unix_deploy_path_scripts4}"    
                     	 sh "ssh -i /var/lib/jenkins/.ssh/id_rsa ${unix_service_account}@${unix_server} 'dzdo chmod 775 ${unix_deploy_path_scripts4}/*'" 
-			 sh "ssh -i /var/lib/jenkins/.ssh/id_rsa srvamr-sfaops@amer@emaaelp00020784 'dzdo sudo chown srvamr-palign@amer.pfizer.com:unix-palign-u@amer.pfizer.com ${unix_deploy_path_scripts4}/*'"
+			 sh "ssh -i /var/lib/jenkins/.ssh/id_rsa srvamr-sfaops@amer@emaaelp00020784 'dzdo chown srvamr-palign@amer.pfizer.com:unix-palign-u@amer.pfizer.com ${unix_deploy_path_scripts4}/*'"
 
 		    }
                 }
