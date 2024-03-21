@@ -9,7 +9,10 @@ pipeline {
 	autosys_apiEndpoint='https://amraelp00011107.pfizer.com:9443/AEWS/jil'
 	unix_server = "emaaelp00020784"
         unix_src_path_scripts = "unix"
-        unix_deploy_path_scripts = "/app/etl/palign/emea/scripts"
+        unix_deploy_path_scripts1 = "/app/etl/palign/emea/scripts"
+	unix_deploy_path_scripts2 = "/app/etl/palign/emea/parameter_files"
+	unix_deploy_path_scripts3 = "/app/etl/palign/ui/emea/scripts"
+	unix_deploy_path_scripts4 = "/app/etl/palign/ui/emea/parameter_files"
         unix_service_account = "srvamr-sfaops"
         unix_permission = "775"
 	priv_key_path = "/var/lib/jenkins/.ssh/palign_id_rsa"    
@@ -35,8 +38,14 @@ pipeline {
         			return // Exit the script
     			}
 			     sh "echo test successful"
-			 sh "scp -i /var/lib/jenkins/.ssh/id_rsa -r ${unix_src_path_scripts}/* ${unix_service_account}@${unix_server}:${unix_deploy_path_scripts}"    
-                    	 sh "ssh -i /var/lib/jenkins/.ssh/id_rsa ${unix_service_account}@${unix_server} 'chmod 775 ${unix_deploy_path_scripts}/*'" 
+			 sh "scp -i /var/lib/jenkins/.ssh/id_rsa -r ${unix_src_path_scripts}/* ${unix_service_account}@${unix_server}:${unix_deploy_path_scripts1}"    
+                    	 sh "ssh -i /var/lib/jenkins/.ssh/id_rsa ${unix_service_account}@${unix_server} 'chmod 775 ${unix_deploy_path_scripts1}/*'" 
+			 sh "scp -i /var/lib/jenkins/.ssh/id_rsa -r ${unix_src_path_scripts}/* ${unix_service_account}@${unix_server}:${unix_deploy_path_scripts2}"    
+                    	 sh "ssh -i /var/lib/jenkins/.ssh/id_rsa ${unix_service_account}@${unix_server} 'chmod 775 ${unix_deploy_path_scripts2}/*'" 
+			 sh "scp -i /var/lib/jenkins/.ssh/id_rsa -r ${unix_src_path_scripts}/* ${unix_service_account}@${unix_server}:${unix_deploy_path_scripts3}"    
+                    	 sh "ssh -i /var/lib/jenkins/.ssh/id_rsa ${unix_service_account}@${unix_server} 'chmod 775 ${unix_deploy_path_scripts3}/*'" 
+			 sh "scp -i /var/lib/jenkins/.ssh/id_rsa -r ${unix_src_path_scripts}/* ${unix_service_account}@${unix_server}:${unix_deploy_path_scripts4}"    
+                    	 sh "ssh -i /var/lib/jenkins/.ssh/id_rsa ${unix_service_account}@${unix_server} 'chmod 775 ${unix_deploy_path_scripts4}/*'" 
 		    }
                 }
         }
