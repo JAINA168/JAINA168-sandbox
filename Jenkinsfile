@@ -10,7 +10,7 @@ pipeline {
 	unix_server = "emaaelp00020784"
         unix_src_path_scripts = "unix"
         unix_deploy_path_scripts = "/app/etl/palign/emea/scripts"
-        unix_service_account = "srvamr-sfaops@amer"
+        unix_service_account = "srvamr-sfaops"
         unix_permission = "775"
 	priv_key_path = "/var/lib/jenkins/.ssh/palign_id_rsa"    
     }
