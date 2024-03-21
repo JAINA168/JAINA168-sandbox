@@ -4,7 +4,7 @@ pipeline {
     agent any
     environment{
  	autosys_dev_server= 'emeavopsfa00001'
-	autosys_prod_server= 'emaaelp00020784'
+	autosys_prod_server= 'PRD-AutoSysR12_1'
 	jilDirectory='autosys'
 	autosys_apiEndpoint='https://amraelp00011107.pfizer.com:9443/AEWS/jil'
 	unix_server = "emaaelp00020784"
