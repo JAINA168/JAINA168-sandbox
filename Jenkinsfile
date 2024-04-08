@@ -10,7 +10,7 @@ pipeline {
 	unix_server = "EUZ1PLDW08"
         unix_src_path_scripts = "unix"
         unix_deploy_path_scripts1 = "/app/etl/archival/scripts"
-	unix_deploy_path_scripts2 = "/app/etl/archival/parameter_files/"
+	unix_deploy_path_scripts2 = "/app/etl/archival/parameter_files"
 	unix_deploy_path_scripts3 = "/app/etl/palign/ui/emea/scripts"
 	unix_deploy_path_scripts4 = "/app/etl/palign/ui/emea/parameter_files"
         unix_deploy_path_scripts5 = "/app/etl/palign/apac/scripts"
