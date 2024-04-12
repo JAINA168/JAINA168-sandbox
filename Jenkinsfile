@@ -18,6 +18,16 @@ pipeline {
 	unix_deploy_path_scripts7 = "/app/etl/palign/ui/apac/scripts"
 	unix_deploy_path_scripts8 = "/app/etl/palign/ui/apac/parameter_files"
         unix_service_account = "srvamr-palign@amer"
+	python_server = "emaaelp00020784" 
+        python_src_path_scr = "./python_scripts/scripts"
+        python_src_path_param = "./python_scripts/parameter_files"
+        python_dest_path_scr = "/app/etl/palign/ui/emea/scripts"
+        python_dest_path_param = "/app/etl/palign/ui/emea/parameter_files"
+        python_service_account = "srvamr-sfaops" 
+        python_group = "unix-palign-u@amer.pfizer.com"
+        python_owner = "srvamr-palign@amer.pfizer.com" 
+        python_permission = "755"   
+	python_priv_key_path = "/var/lib/jenkins/.ssh/id_rsa"   
         unix_permission = "775"
 	priv_key_path = "/var/lib/jenkins/.ssh/palign_id_rsa"    
     }
@@ -52,6 +62,44 @@ pipeline {
 		    }
                 }
         }
+        stage ("Deploy to Python"){
+            when {
+                 expression { params.Deploy_to_Python_Utility == "Yes" }
+            }
+                steps{
+                    script{
+			if (params.dry_run == 'Yes') {
+        			// Check if dry_run is 'Yes'
+        			sh "ls ${python_src_path_scr}"
+				sh "ls ${python_src_path_param}"
+        			return // Exit the script
+    			}
+                        sh "scp -i ${env.python_priv_key_path} -r ${env.python_src_path_scr}/* ${env.python_service_account}@${env.python_server}:${env.python_dest_path_scr}"
+                        sh "scp -i ${env.python_priv_key_path} -r ${env.python_src_path_param}/* ${env.python_service_account}@${env.python_server}:${env.python_dest_path_param}"
+			
+			// Set Permissions of the destination files  
+			if(python_server == 'emaaelp00020784'){    
+				sh "ssh -i ${env.python_priv_key_path} ${env.python_service_account}@${env.python_server} 'dzdo chmod ${env.python_permission} ${env.python_dest_path_scr}/*'"
+                        	sh "ssh -i ${env.python_priv_key_path} ${env.python_service_account}@${env.python_server} 'dzdo chmod ${env.python_permission} ${env.python_dest_path_param}/*'"
+			}
+			else{
+				sh "ssh -i ${env.python_priv_key_path} ${env.python_service_account}@${env.python_server} 'sudo chmod ${env.python_permission} ${env.python_dest_path_scr}/*'"
+                        	sh "ssh -i ${env.python_priv_key_path} ${env.python_service_account}@${env.python_server} 'sudo chmod ${env.python_permission} ${env.python_dest_path_param}/*'"
+
+			}
+                        //Set the owner and file permissions inside a folder
+                        if(python_server == 'emaaelp00020784'){
+			    sh "ssh -i ${env.python_priv_key_path} ${env.python_service_account}@${env.python_server} 'dzdo chown ${env.python_owner}:${env.python_group} ${env.python_dest_path_scr}/*'"
+                            sh "ssh -i ${env.python_priv_key_path} ${env.python_service_account}@${env.python_server} 'dzdo chown ${env.python_owner}:${env.python_group} ${env.python_dest_path_param}/*'"
+			}
+			else{
+			    sh "ssh -i ${env.python_priv_key_path} ${env.python_service_account}@${env.python_server} 'sudo chown ${env.python_owner}:${env.python_group} ${env.python_dest_path_scr}/*'"
+                            sh "ssh -i ${env.python_priv_key_path} ${env.python_service_account}@${env.python_server} 'sudo chown ${env.python_owner}:${env.python_group} ${env.python_dest_path_param}/*'"
+
+			}
+			}
+                }
+        }	    
         
          stage ("Deploy to Autosys"){
             when {
