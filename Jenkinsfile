@@ -34,6 +34,7 @@ pipeline {
     parameters {
         choice choices: ['No', 'Yes'], description: 'Mention if You want to Deploy into Autosys Environment', name: 'Deploy_to_Autosys'
 	choice choices: ['No', 'Yes'], description: 'Mention if You want to Deploy into Unix Environment', name: 'Deploy_to_Unix'
+	choice choices: ['No', 'Yes'], description: 'Mention if You want to Deploy into Python', name: 'Deploy_to_Python_Utility'    
 	choice choices: ['Yes', 'No'], description: 'Mention if You want to Dry Run', name: 'dry_run'    
 	choice choices: ['No', 'Yes'], description: 'If you want to send alerts', name: 'Email_Alert'
         string defaultValue: 'None', description: 'Provide the comma separated Email addresses.', name: 'Notify_to'
