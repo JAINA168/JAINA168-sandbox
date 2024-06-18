@@ -1,0 +1,26 @@
+HCP agent transfer
+
+resource "aws_connect_contact_flow" "hcp_agent_transfer" {
+  name    = "HCP - Agent Transfer"
+  type    = "agentTransfer"
+  content = jsonencode(var.contact_flow_content)  // Provide the JSON content
+}
+
+resource "aws_connect_instance" "instance" {
+  // Assuming you have an aws_connect_instance resource defined
+  // Replace aws_connect_instance with your actual AWS Connect instance resource name
+  instance_id = aws_connect_instance.instance.id
+}
+
+resource "aws_connect_instance_attribute" "flow_logging" {
+  instance_id = aws_connect_instance.instance.id
+  attribute_type = "FLOW_LOGGING"
+  value = "Enabled"
+}
+
+resource "aws_lambda_permission" "allow_connect" {
+  statement_id  = "AllowExecutionFromConnect"
+  action        = "lambda:InvokeFunction"
+  function_name = "arn:aws:lambda:ap-northeast-1:406592950315:function:JAP-PROD-serverlessrepo-s-InvokeTelephonyIntegrati-5Asv2AMrlNmG"
+  principal     = "connect.amazonaws.com"
+}
