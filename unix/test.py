@@ -1,4 +1,50 @@
 resource "aws_iam_role" "aws_service_role_for_amazon_connect" {
+  name = "AWSServiceRoleForAmazonConnect${var.role_name_suffix}"
+
+  assume_role_policy = file("policies/AmazonConnectAssumeRolePolicy.json")
+
+  max_session_duration = 3600
+}
+
+resource "aws_iam_policy" "amazon_connect_service_data_stream_agent_events" {
+  name   = "AmazonConnectServiceDataStreamAgentEvents"
+  policy = file("policies/AmazonConnectServiceDataStreamAgentEvents.json")
+}
+
+resource "aws_iam_policy" "amazon_connect_service_data_stream_contact_trace_record" {
+  name   = "AmazonConnectServiceDataStreamContactTraceRecord"
+  policy = file("policies/AmazonConnectServiceDataStreamContactTraceRecord.json")
+}
+
+resource "aws_iam_policy" "amazon_connect_service_linked_role_policy" {
+  name   = "AmazonConnectServiceLinkedRolePolicy"
+  policy = file("policies/AmazonConnectServiceLinkedRolePolicy.json")
+}
+
+resource "aws_iam_policy" "amazon_connect_service_live_media_streaming_access" {
+  name   = "AmazonConnectServiceLiveMediaStreamingAccess"
+  policy = file("policies/AmazonConnectServiceLiveMediaStreamingAccess.json")
+}
+
+resource "aws_iam_role_policy_attachment" "attach_data_stream_agent_events_policy" {
+  role       = aws_iam_role.aws_service_role_for_amazon_connect.name
+  policy_arn = aws_iam_policy.amazon_connect_service_data_stream_agent_events.arn
+}
+
+resource "aws_iam_role_policy_attachment" "attach_data_stream_contact_trace_record_policy" {
+  role       = aws_iam_role.aws_service_role_for_amazon_connect.name
+  policy_arn = aws_iam_policy.amazon_connect_service_data_stream_contact_trace_record.arn
+}
+
+resource "aws_iam_role_policy_attachment" "attach_service_linked_role_policy" {
+  role       = aws_iam_role.aws_service_role_for_amazon_connect.name
+  policy_arn = aws_iam_policy.amazon_connect_service_linked_role_policy.arn
+}
+
+resource "aws_iam_role_policy_attachment" "attach_live_media_streaming_access_policy" {
+  role       = aws_iam_role.aws_service_role_for_amazon_connect.name
+  policy_arn = aws_iam_policy.amazon_connect_service_live_media_streaming_access.arn
+}resource "aws_iam_role" "aws_service_role_for_amazon_connect" {
   name = "AWSServiceRoleForAmazonConnect_N9FSnJSLAy3Hjpeixw5h"
 
   assume_role_policy = jsonencode({
