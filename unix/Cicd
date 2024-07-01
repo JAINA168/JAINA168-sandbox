@@ -1,0 +1,112 @@
+To create a CI/CD pipeline for the Nexus deployment using Jenkins, you need to set up a Jenkins job and configure a Jenkins pipeline. Here’s an example of how you can define a Jenkins pipeline using a `Jenkinsfile`.
+
+### Prerequisites:
+- Jenkins installed and configured.
+- Jenkins Pipeline plugin installed.
+- Jenkins credentials set up for accessing the server if necessary.
+
+### Steps:
+
+1. **Create a Jenkins Pipeline Job**:
+   - Go to Jenkins.
+   - Click on "New Item".
+   - Enter a name for your job and select "Pipeline".
+   - Click "OK".
+
+2. **Create a `Jenkinsfile`**:
+   - Add a `Jenkinsfile` to the root of your Git repository. This file will contain the pipeline script.
+
+Here's an example `Jenkinsfile` based on the steps you provided:
+
+```groovy
+pipeline {
+    agent any
+
+    environment {
+        VIRTUAL_ENV = 'files/virtual_envs/.NexusEnv'
+        PROJECT_DIR = '/home/nginx/sit-nexus'
+    }
+
+    stages {
+        stage('Checkout') {
+            steps {
+                checkout scm
+            }
+        }
+
+        stage('Set up Python Environment') {
+            steps {
+                script {
+                    def pythonHome = tool name: 'Python 3.x', type: 'Python'
+                    env.PATH = "${pythonHome}/bin:${env.PATH}"
+                }
+                sh '''
+                    python -m venv ${VIRTUAL_ENV}
+                    source ${VIRTUAL_ENV}/bin/activate
+                    pip install -r requirements.txt
+                '''
+            }
+        }
+
+        stage('Pull Latest Changes') {
+            steps {
+                dir("${PROJECT_DIR}") {
+                    sh 'git reset --hard'
+                    sh 'git pull origin sit'
+                }
+            }
+        }
+
+        stage('Activate Virtual Environment and Collect Static Files') {
+            steps {
+                dir("${PROJECT_DIR}") {
+                    sh '''
+                        source ${VIRTUAL_ENV}/bin/activate
+                        python manage.py collectstatic --noinput
+                    '''
+                }
+            }
+        }
+
+        stage('Restart Services') {
+            steps {
+                sh 'sudo systemctl restart gunicorn-sit_nexus.service'
+                sh 'sudo nginx -s reload'
+            }
+        }
+    }
+
+    post {
+        success {
+            echo 'Deployment completed successfully'
+        }
+        failure {
+            echo 'Deployment failed'
+        }
+    }
+}
+```
+
+### Explanation:
+
+1. **Environment Variables**:
+   - `VIRTUAL_ENV`: Path to the Python virtual environment.
+   - `PROJECT_DIR`: Path to the project directory.
+
+2. **Stages**:
+   - **Checkout**: Checks out the code from the repository.
+   - **Set up Python Environment**: Sets up the Python environment and installs dependencies.
+   - **Pull Latest Changes**: Pulls the latest changes from the `sit` branch.
+   - **Activate Virtual Environment and Collect Static Files**: Activates the virtual environment and collects static files using Django’s `collectstatic` command.
+   - **Restart Services**: Restarts the Gunicorn service and reloads Nginx.
+
+3. **Post Actions**:
+   - **Success**: Prints a message if the deployment succeeds.
+   - **Failure**: Prints a message if the deployment fails.
+
+### Notes:
+- Ensure that Jenkins has the necessary permissions to execute `sudo` commands. You might need to configure `sudo` without a password for the Jenkins user.
+- Ensure that the `Python 3.x` tool is correctly configured in Jenkins global tool configuration.
+- Adjust the paths and configurations as per your environment.
+
+Save this `Jenkinsfile` in your repository and configure your Jenkins job to use the pipeline script from SCM. This will automate the deployment process using Jenkins.
